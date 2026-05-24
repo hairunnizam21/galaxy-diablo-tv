@@ -12,6 +12,9 @@ captures/
 *.apk
 *.aab
 output-metadata.json
+!releases/*.apk
+!releases/*.aab
+!releases/*.zip
 
 # Kotlin
 *.kotlin_module
