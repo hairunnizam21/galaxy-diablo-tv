@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_galaxy_gradient"
+    android:orientation="vertical">
+
+    <!-- Top bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@drawable/bg_topbar_gradient"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="8dp"
+        android:paddingEnd="16dp">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:background="@drawable/bg_topbar_button"
+            android:contentDescription="Back"
+            android:focusable="true"
+            android:padding="9dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_arrow_back" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-black"
+            android:letterSpacing="0.06"
+            android:text="@string/settings_title"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="24dp"
+            android:paddingTop="18dp"
+            android:paddingEnd="24dp"
+            android:paddingBottom="24dp">
+
+            <!-- Playlist URL section -->
+            <TextView
+                style="@style/SettingSectionHeader"
+                android:text="@string/settings_playlist_url" />
+
+            <TextView
+                style="@style/SettingSectionDescription"
+                android:text="@string/settings_playlist_url_desc" />
+
+            <EditText
+                android:id="@+id/et_playlist_url"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_input_field"
+                android:fontFamily="monospace"
+                android:hint="https://raw.githubusercontent.com/..."
+                android:imeOptions="actionDone"
+                android:inputType="textUri"
+                android:minHeight="48dp"
+                android:paddingStart="14dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="14dp"
+                android:paddingBottom="10dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/text_hint"
+                android:textSize="13sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_save_url"
+                    android:layout_width="0dp"
+                    android:layout_height="44dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_button_primary"
+                    android:focusable="true"
+                    android:fontFamily="sans-serif-medium"
+                    android:letterSpacing="0.04"
+                    android:text="Simpan &amp; Muat Semula"
+                    android:textColor="@color/white"
+                    android:textSize="13sp" />
+
+                <Button
+                    android:id="@+id/btn_reset_url"
+                    android:layout_width="0dp"
+                    android:layout_height="44dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_button_secondary"
+                    android:focusable="true"
+                    android:fontFamily="sans-serif-medium"
+                    android:letterSpacing="0.04"
+                    android:text="Reset ke Default"
+                    android:textColor="@color/neon_cyan"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <View
+                style="@style/SettingDivider"
+                android:layout_marginTop="24dp" />
+
+            <!-- Welcome toast -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/SettingItemTitle"
+                        android:text="@string/settings_show_welcome_toast" />
+
+                    <TextView
+                        style="@style/SettingItemDescription"
+                        android:text="@string/settings_show_welcome_toast_desc" />
+                </LinearLayout>
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/sw_welcome_toast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:focusable="true"
+                    android:thumbTint="@color/white"
+                    android:trackTint="@color/neon_blue" />
+            </LinearLayout>
+
+            <View
+                style="@style/SettingDivider"
+                android:layout_marginTop="20dp" />
+
+            <!-- Clear cache -->
+            <LinearLayout
+                android:id="@+id/row_clear_cache"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="?selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="6dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/SettingItemTitle"
+                        android:text="@string/settings_clear_cache" />
+
+                    <TextView
+                        style="@style/SettingItemDescription"
+                        android:text="@string/settings_clear_cache_desc" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="14dp"
+                    android:contentDescription="Clear cache"
+                    android:src="@drawable/ic_clear_cache"
+                    app:tint="@color/neon_blue"
+                    xmlns:app="http://schemas.android.com/apk/res-auto" />
+            </LinearLayout>
+
+            <View
+                style="@style/SettingDivider"
+                android:layout_marginTop="20dp" />
+
+            <!-- About -->
+            <TextView
+                style="@style/SettingSectionHeader"
+                android:layout_marginTop="24dp"
+                android:text="@string/settings_about" />
+
+            <TextView
+                android:id="@+id/tv_about"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif"
+                android:lineSpacingExtra="3dp"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="end"
+                android:text="@string/copyright"
+                android:textColor="@color/neon_cyan"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

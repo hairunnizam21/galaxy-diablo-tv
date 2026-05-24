@@ -1,0 +1,18 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+    <!-- outer glow ring (cyan) -->
+    <path
+        android:fillColor="#FF22D3EE"
+        android:pathData="M60,4 C90.928,4 116,29.072 116,60 C116,90.928 90.928,116 60,116 C29.072,116 4,90.928 4,60 C4,29.072 29.072,4 60,4 Z M60,12 C33.49,12 12,33.49 12,60 C12,86.51 33.49,108 60,108 C86.51,108 108,86.51 108,60 C108,33.49 86.51,12 60,12 Z" />
+    <!-- inner ring (blue) -->
+    <path
+        android:fillColor="#FF3B82F6"
+        android:pathData="M60,22 C81,22 98,39 98,60 C98,81 81,98 60,98 C39,98 22,81 22,60 C22,39 39,22 60,22 Z M60,32 C44.5,32 32,44.5 32,60 C32,75.5 44.5,88 60,88 C75.5,88 88,75.5 88,60 C88,44.5 75.5,32 60,32 Z" />
+    <!-- center star -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M60,38 L66,54 L82,54 L69,64 L73,80 L60,70 L47,80 L51,64 L38,54 L54,54 Z" />
+</vector>

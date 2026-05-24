@@ -1,0 +1,70 @@
+<resources>
+    <string name="app_name">Galaxy Diablo</string>
+    <string name="app_tagline">Universe of Live TV</string>
+    <string name="copyright">© Suzuneiayano</string>
+
+    <!-- Splash -->
+    <string name="fetching_playlist">Mengambil playlist dari sumber…</string>
+    <string name="parsing_playlist">Mengurai senarai saluran…</string>
+    <string name="loading_done">Selesai!</string>
+    <string name="loading_failed">Gagal memuatkan playlist</string>
+    <string name="fetch_failed">Gagal: %1$s</string>
+    <string name="retry">Cuba semula</string>
+
+    <!-- Welcome toast -->
+    <string name="welcome_toast_title">🌌 Pengenalan Galaxy Diablo</string>
+    <string name="welcome_toast">Sumber link adalah hasil dari Free Source — nikmati hiburan tanpa batas. © Suzuneiayano</string>
+
+    <!-- Top bar / menu -->
+    <string name="menu_home">Beranda</string>
+    <string name="menu_settings">Tetapan</string>
+    <string name="menu_about">Tentang</string>
+    <string name="menu_search">Cari</string>
+    <string name="menu_favorites">Kegemaran</string>
+
+    <string name="all_categories">Semua</string>
+    <string name="favorites">Kegemaran</string>
+    <string name="no_channels">Tiada saluran dijumpai</string>
+    <string name="search_hint">Cari saluran…</string>
+    <string name="refresh_done">Berjaya muat %1$d saluran</string>
+    <string name="refreshing">Memuat semula…</string>
+    <string name="cache_cleared">Cache dipadam</string>
+    <string name="confirm_clear_cache">Padam cache playlist dan muat semula?</string>
+    <string name="confirm_exit_title">Keluar dari Galaxy Diablo?</string>
+    <string name="confirm_exit_message">Adakah anda pasti mahu keluar?</string>
+    <string name="yes">Ya</string>
+    <string name="no">Tidak</string>
+    <string name="invalid_url">URL tidak sah. Pastikan bermula dengan http:// atau https://</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Tetapan</string>
+    <string name="settings_show_welcome_toast">Tunjukkan toast selamat datang</string>
+    <string name="settings_show_welcome_toast_desc">Mesej selamat datang setiap kali masuk menu</string>
+    <string name="settings_playlist_url">URL Playlist M3U</string>
+    <string name="settings_playlist_url_desc">Masukkan link M3U dari GitHub atau mana-mana sumber yang menyediakan M3U. Sokongan format standard #EXTINF dan format custom `=== Kategori ===`.</string>
+    <string name="settings_clear_cache">Padam cache</string>
+    <string name="settings_clear_cache_desc">Padam playlist yang dicache</string>
+    <string name="settings_about">Tentang Galaxy Diablo</string>
+    <string name="about_body">Galaxy Diablo • IPTV Player\n\nPlayer: AndroidX Media3 ExoPlayer\nProtokol: DASH (.mpd), HLS (.m3u8), MP4 progressive, RTMP\nDRM: Widevine, ClearKey\nHeaders: User-Agent, Referer, Origin, Authorization (#EXTVLCOPT)\nDirektif: #KODIPROP (license_type, license_key, manifest_type)\n\nPlaylist disokong:\n• Format standard M3U (#EXTM3U + #EXTINF)\n• Format custom `=== Kategori ===` (sumber animedantv)</string>
+
+    <!-- Player -->
+    <string name="player_loading">Bersedia menstream…</string>
+    <string name="player_error">Gagal main saluran ini</string>
+    <string name="prev_channel">Saluran sebelum</string>
+    <string name="next_channel">Saluran seterusnya</string>
+    <string name="pip">Picture-in-Picture</string>
+    <string name="audio_track">Trek audio</string>
+    <string name="subtitle_track">Sarikata</string>
+    <string name="video_track">Kualiti video</string>
+    <string name="aspect_ratio">Nisbah aspek</string>
+    <string name="aspect_fit">Fit</string>
+    <string name="aspect_fill">Fill</string>
+    <string name="aspect_zoom">Zoom</string>
+    <string name="favorite_add">Tambah ke kegemaran</string>
+    <string name="favorite_remove">Buang dari kegemaran</string>
+
+    <string name="cancel">Batal</string>
+    <string name="ok">OK</string>
+    <string name="off">Mati</string>
+    <string name="auto">Auto</string>
+</resources>

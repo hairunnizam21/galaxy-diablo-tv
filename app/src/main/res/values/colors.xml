@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Neon Blue Glassmorphism Palette -->
+    <color name="galaxy_bg">#FF030712</color>
+    <color name="galaxy_bg_alt">#FF071224</color>
+    <color name="galaxy_surface">#FF0B1A33</color>
+    <color name="galaxy_surface_alt">#FF112A4D</color>
+    <color name="galaxy_glass">#660B1A33</color>
+    <color name="galaxy_glass_strong">#990B1A33</color>
+
+    <!-- Diablo accent (kept for branding pop) -->
+    <color name="diablo_red">#FFE5294B</color>
+    <color name="diablo_red_dark">#FFB31C3A</color>
+    <color name="diablo_pink">#FFFF4F8B</color>
+
+    <!-- Neon blue palette -->
+    <color name="neon_blue">#FF22D3EE</color>
+    <color name="neon_blue_alt">#FF3B82F6</color>
+    <color name="neon_blue_deep">#FF1D4ED8</color>
+    <color name="neon_cyan">#FF67E8F9</color>
+    <color name="neon_ice">#FFA5F3FC</color>
+    <color name="neon_glow">#5522D3EE</color>
+    <color name="neon_glow_soft">#3322D3EE</color>
+
+    <!-- Legacy aliases (kept for backward compat in xml) -->
+    <color name="galaxy_purple">#FF22D3EE</color>
+    <color name="galaxy_purple_dark">#FF1D4ED8</color>
+    <color name="galaxy_blue">#FF3B82F6</color>
+    <color name="galaxy_cyan">#FF22D3EE</color>
+    <color name="galaxy_yellow">#FFFFB020</color>
+
+    <color name="text_primary">#FFFFFFFF</color>
+    <color name="text_secondary">#FFB0CFE8</color>
+    <color name="text_tertiary">#FF6C8FB3</color>
+
+    <color name="ripple">#33FFFFFF</color>
+    <color name="overlay_dim">#99000000</color>
+    <color name="overlay_dim_strong">#CC000000</color>
+</resources>

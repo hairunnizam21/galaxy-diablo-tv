@@ -1,0 +1,8 @@
+<resources>
+    <!-- Galaxy Diablo custom toast style -->
+    <style name="GalaxyToast">
+        <item name="android:background">@drawable/bg_toast</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="tab_inactive">#7AB8B0D4</color>
+    <color name="accent_light">#FF4C9EEB</color>
+    <color name="divider">#22FFFFFF</color>
+    <color name="text_secondary_alpha">#80FFFFFF</color>
+    <color name="text_hint">#66FFFFFF</color>
+    <color name="text_title_dim">#FFE6E1F5</color>
+    <color name="text_epg_now">#FF22D3EE</color>
+    <color name="text_epg_next">#FFB8B0D4</color>
+</resources>
