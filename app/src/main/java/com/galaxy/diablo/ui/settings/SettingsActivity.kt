@@ -1,5 +1,7 @@
 package com.galaxy.diablo.ui.settings
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.view.View
@@ -60,6 +62,21 @@ class SettingsActivity : AppCompatActivity() {
         rowClear.setOnClickListener {
             PlaylistRepository(applicationContext).clearCache()
             Toast.makeText(this, R.string.cache_cleared, Toast.LENGTH_SHORT).show()
+        }
+
+        findViewById<View>(R.id.row_telegram).setOnClickListener {
+            openExternal(getString(R.string.telegram_url))
+        }
+    }
+
+    private fun openExternal(url: String) {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url)).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            startActivity(intent)
+        } catch (_: Throwable) {
+            Toast.makeText(this, R.string.cannot_open_link, Toast.LENGTH_SHORT).show()
         }
     }
 

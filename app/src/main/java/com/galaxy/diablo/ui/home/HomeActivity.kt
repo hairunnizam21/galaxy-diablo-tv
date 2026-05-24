@@ -18,6 +18,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.galaxy.diablo.R
 import com.galaxy.diablo.data.Category
 import com.galaxy.diablo.data.Channel
@@ -27,6 +28,9 @@ import com.galaxy.diablo.data.PrefsManager
 import com.galaxy.diablo.ui.player.PlayerActivity
 import com.galaxy.diablo.ui.settings.SettingsActivity
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -39,12 +43,15 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var tvCount: TextView
     private lateinit var searchBar: View
     private lateinit var etSearch: EditText
+    private lateinit var swipeRefresh: SwipeRefreshLayout
     private lateinit var categoryAdapter: CategoryAdapter
     private lateinit var channelAdapter: ChannelAdapter
 
     private var allChannels: List<Channel> = emptyList()
     private var categories: List<Category> = emptyList()
     private var query: String = ""
+    private var periodicRefreshJob: Job? = null
+    private val periodicIntervalMs: Long = 30L * 60L * 1000L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,15 +64,70 @@ class HomeActivity : AppCompatActivity() {
         tvCount = findViewById(R.id.tv_channel_count)
         searchBar = findViewById(R.id.search_bar)
         etSearch = findViewById(R.id.et_search)
+        swipeRefresh = findViewById(R.id.swipe_refresh)
 
         setupRecyclers()
         wireTopBar()
         wireSearch()
+        wireSwipeRefresh()
 
         allChannels = PlaylistCache.channels
         rebuildCategories()
         showCurrentCategoryChannels()
         maybeShowWelcomeToast()
+
+        // Stale-while-revalidate: kick a silent fresh fetch in background on entry
+        silentRefresh(showToastOnUpdate = true)
+    }
+
+    private fun wireSwipeRefresh() {
+        swipeRefresh.setColorSchemeColors(0xFF22D3EE.toInt(), 0xFF3B82F6.toInt(), 0xFF67E8F9.toInt())
+        swipeRefresh.setProgressBackgroundColorSchemeColor(0xFF0B1224.toInt())
+        swipeRefresh.setOnRefreshListener {
+            lifecycleScope.launch {
+                val repo = PlaylistRepository(applicationContext)
+                val res = repo.fetchFreshSilently(PrefsManager.playlistUrl)
+                withContext(Dispatchers.Main) {
+                    swipeRefresh.isRefreshing = false
+                    res.fold(
+                        onSuccess = {
+                            applyFreshChannels(it, notifyOnChange = true, silentMode = false)
+                        },
+                        onFailure = { toast(getString(R.string.fetch_failed, it.message ?: "")) }
+                    )
+                }
+            }
+        }
+    }
+
+    private fun applyFreshChannels(fresh: List<Channel>, notifyOnChange: Boolean, silentMode: Boolean) {
+        val changed = fresh.size != allChannels.size ||
+            fresh.map { it.name to it.streamUrl }.toSet() !=
+                allChannels.map { it.name to it.streamUrl }.toSet()
+        if (changed) {
+            PlaylistCache.channels = fresh
+            allChannels = fresh
+            rebuildCategories()
+            showCurrentCategoryChannels()
+            if (notifyOnChange) {
+                if (silentMode) toast(getString(R.string.silent_refresh_updated, fresh.size))
+                else toast(getString(R.string.refresh_done, fresh.size))
+            }
+        } else if (notifyOnChange && silentMode) {
+            // Don't spam the user with "unchanged" toasts for silent refresh; skip.
+        } else if (notifyOnChange) {
+            toast(getString(R.string.refresh_done, fresh.size))
+        }
+    }
+
+    private fun silentRefresh(showToastOnUpdate: Boolean) {
+        lifecycleScope.launch {
+            val repo = PlaylistRepository(applicationContext)
+            val res = repo.fetchFreshSilently(PrefsManager.playlistUrl)
+            withContext(Dispatchers.Main) {
+                res.onSuccess { applyFreshChannels(it, notifyOnChange = showToastOnUpdate, silentMode = true) }
+            }
+        }
     }
 
     private fun setupRecyclers() {
@@ -237,5 +299,31 @@ class HomeActivity : AppCompatActivity() {
             rebuildCategories()
             showCurrentCategoryChannels()
         }
+        startPeriodicRefresh()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopPeriodicRefresh()
+    }
+
+    private fun startPeriodicRefresh() {
+        if (periodicRefreshJob?.isActive == true) return
+        periodicRefreshJob = lifecycleScope.launch {
+            while (isActive) {
+                delay(periodicIntervalMs)
+                if (!isActive) break
+                val repo = PlaylistRepository(applicationContext)
+                val res = repo.fetchFreshSilently(PrefsManager.playlistUrl)
+                withContext(Dispatchers.Main) {
+                    res.onSuccess { applyFreshChannels(it, notifyOnChange = true, silentMode = true) }
+                }
+            }
+        }
+    }
+
+    private fun stopPeriodicRefresh() {
+        periodicRefreshJob?.cancel()
+        periodicRefreshJob = null
     }
 }

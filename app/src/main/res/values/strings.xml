@@ -28,6 +28,8 @@
     <string name="search_hint">Cari saluran…</string>
     <string name="refresh_done">Berjaya muat %1$d saluran</string>
     <string name="refreshing">Memuat semula…</string>
+    <string name="silent_refresh_updated">Auto-refresh: playlist dikemas kini (%1$d saluran)</string>
+    <string name="silent_refresh_unchanged">Auto-refresh: playlist masih terkini</string>
     <string name="cache_cleared">Cache dipadam</string>
     <string name="confirm_clear_cache">Padam cache playlist dan muat semula?</string>
     <string name="confirm_exit_title">Keluar dari Galaxy Diablo?</string>
@@ -44,6 +46,14 @@
     <string name="settings_playlist_url_desc">Masukkan link M3U dari GitHub atau mana-mana sumber yang menyediakan M3U. Sokongan format standard #EXTINF dan format custom `=== Kategori ===`.</string>
     <string name="settings_clear_cache">Padam cache</string>
     <string name="settings_clear_cache_desc">Padam playlist yang dicache</string>
+    <string name="settings_info">Info &amp; Hubungi</string>
+    <string name="settings_info_desc">Hubungi pembangun atau sertai komuniti Galaxy Diablo</string>
+    <string name="settings_telegram">Telegram</string>
+    <string name="telegram_handle">@suzuneiayano</string>
+    <string name="telegram_url">https://t.me/suzuneiayano</string>
+    <string name="open_action">BUKA</string>
+    <string name="cannot_open_link">Tiada aplikasi untuk buka link ini</string>
+
     <string name="settings_about">Tentang Galaxy Diablo</string>
     <string name="about_body">Galaxy Diablo • IPTV Player\n\nPlayer: AndroidX Media3 ExoPlayer\nProtokol: DASH (.mpd), HLS (.m3u8), MP4 progressive, RTMP\nDRM: Widevine, ClearKey\nHeaders: User-Agent, Referer, Origin, Authorization (#EXTVLCOPT)\nDirektif: #KODIPROP (license_type, license_key, manifest_type)\n\nPlaylist disokong:\n• Format standard M3U (#EXTM3U + #EXTINF)\n• Format custom `=== Kategori ===` (sumber animedantv)</string>
 

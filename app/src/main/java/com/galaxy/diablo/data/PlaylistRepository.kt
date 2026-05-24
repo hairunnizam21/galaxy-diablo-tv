@@ -73,4 +73,30 @@ class PlaylistRepository(private val context: Context) {
     }
 
     fun clearCache() { runCatching { cacheFile.delete() } }
+
+    fun hasCache(): Boolean = cacheFile.exists()
+
+    /**
+     * Silent background fetch — always hits the network, updates the cache, returns parsed channels.
+     * Used for stale-while-revalidate and periodic auto-refresh.
+     */
+    suspend fun fetchFreshSilently(url: String): Result<List<Channel>> = withContext(Dispatchers.IO) {
+        try {
+            val request = Request.Builder()
+                .url(url)
+                .header("User-Agent", "GalaxyDiablo/1.0 (Android)")
+                .build()
+            client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) {
+                    return@withContext Result.failure<List<Channel>>(RuntimeException("HTTP ${response.code}"))
+                }
+                val body = response.body?.string()
+                    ?: return@withContext Result.failure<List<Channel>>(RuntimeException("Empty body"))
+                cacheFile.writeText(body)
+                Result.success(PlaylistParser.parse(body))
+            }
+        } catch (t: Throwable) {
+            Result.failure(t)
+        }
+    }
 }
