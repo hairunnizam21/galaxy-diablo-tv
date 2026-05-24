@@ -7,12 +7,19 @@ modern AndroidX Media3 (ExoPlayer) backend and a neon-blue glassmorphism UI.
 
 ---
 
-## ⬇️ Download (latest v1.2)
+## ⬇️ Download (latest v1.3)
 
 | | Fail | Saiz | Link |
 |---|---|---|---|
-| 📱 | **APK siap install** | ~12 MB | **[Download APK](releases/galaxy-diablo-v1.2-debug.apk)** |
-| 📦 | **Source code zip** (untuk recompile) | ~150 KB | **[Download ZIP](releases/galaxy-diablo-source-v1.2.zip)** |
+| 📱 | **APK siap install** | ~12 MB | **[Download APK v1.3](releases/galaxy-diablo-v1.3-debug.apk)** |
+| 📦 | **Source code zip** (untuk recompile) | ~280 KB | **[Download ZIP v1.3](releases/galaxy-diablo-source-v1.3.zip)** |
+
+**Versi v1.3 (latest) — fixes:**
+- 🛠 Player buttons sekarang boleh ditekan (transparent overlay yang menghalang touch dah dialih keluar)
+- 🌐 Chrome-like User-Agent default — lebih banyak channel CDN-protected boleh main
+- ⏱ HTTP timeout 20s (lebih sabar untuk stream slow-start)
+- 📺 MimeType detection untuk URL tanpa extension `.m3u8` / `.mpd`
+- ⚠ Error message yang lebih jelas (tunjuk nama channel + sebab gagal)
 
 > **Cara install APK:** Buka link di telefon Android → benarkan "Install dari sumber tidak dikenali" → tap fail yang dimuat turun → Install.
 

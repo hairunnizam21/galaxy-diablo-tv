@@ -47,11 +47,7 @@
         </LinearLayout>
     </FrameLayout>
 
-    <View
-        android:id="@+id/tap_to_show_overlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/transparent"
-        android:clickable="true"
-        android:focusable="true" />
+    <!-- Note: PlayerView handles tap-to-toggle controls natively via hide_on_touch.
+         Do NOT add a transparent clickable overlay here — it would steal touches
+         from PlayerView's controller and break all player buttons. -->
 </FrameLayout>

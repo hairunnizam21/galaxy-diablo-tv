@@ -113,11 +113,14 @@ class PlayerActivity : AppCompatActivity() {
 
             override fun onPlayerError(error: PlaybackException) {
                 loadingOverlay.visibility = View.GONE
-                Toast.makeText(
-                    this@PlayerActivity,
-                    "Playback gagal: ${error.errorCodeName}",
-                    Toast.LENGTH_LONG
-                ).show()
+                val ch = channels.getOrNull(currentIndex)
+                val msg = buildString {
+                    append(ch?.name ?: "Channel")
+                    append(" • ")
+                    append(error.errorCodeName)
+                    error.cause?.message?.let { append(" • ").append(it.take(80)) }
+                }
+                Toast.makeText(this@PlayerActivity, msg, Toast.LENGTH_LONG).show()
             }
         })
         if (BuildFlags.DEBUG_PLAYER) p.addAnalyticsListener(EventLogger())
@@ -130,9 +133,14 @@ class PlayerActivity : AppCompatActivity() {
         titleView?.text = ch.name
         loadingOverlay.visibility = View.VISIBLE
 
+        // Many IPTV CDNs reject the default ExoPlayer UA; mimic a modern Chrome on Android.
+        val defaultUa = "Mozilla/5.0 (Linux; Android 14; SM-S918B) AppleWebKit/537.36 " +
+            "(KHTML, like Gecko) Chrome/126.0.0.0 Mobile Safari/537.36"
         val httpFactory = DefaultHttpDataSource.Factory()
-            .setUserAgent(ch.userAgent ?: "GalaxyDiablo/1.0 (Android Media3)")
+            .setUserAgent(ch.userAgent ?: defaultUa)
             .setAllowCrossProtocolRedirects(true)
+            .setConnectTimeoutMs(20_000)
+            .setReadTimeoutMs(20_000)
             .apply {
                 val headers = mutableMapOf<String, String>()
                 ch.referer?.let { headers["Referer"] = it }
@@ -142,12 +150,26 @@ class PlayerActivity : AppCompatActivity() {
             }
 
         val mediaItemBuilder = MediaItem.Builder().setUri(ch.streamUrl)
+        val lowerUrl = ch.streamUrl.lowercase()
         when (ch.streamType) {
             com.galaxy.diablo.data.StreamType.DASH ->
                 mediaItemBuilder.setMimeType(MimeTypes.APPLICATION_MPD)
             com.galaxy.diablo.data.StreamType.HLS ->
                 mediaItemBuilder.setMimeType(MimeTypes.APPLICATION_M3U8)
-            else -> { /* let auto detect */ }
+            com.galaxy.diablo.data.StreamType.RTSP ->
+                mediaItemBuilder.setMimeType(MimeTypes.APPLICATION_RTSP)
+            else -> {
+                // Heuristic: many IPTV stream URLs don't have file extensions.
+                // Try to nudge ExoPlayer based on query strings or path hints.
+                when {
+                    lowerUrl.contains("m3u8") -> mediaItemBuilder.setMimeType(MimeTypes.APPLICATION_M3U8)
+                    lowerUrl.contains(".mpd") || lowerUrl.contains("manifest.mpd") ->
+                        mediaItemBuilder.setMimeType(MimeTypes.APPLICATION_MPD)
+                    lowerUrl.contains(".ts") -> mediaItemBuilder.setMimeType(MimeTypes.VIDEO_MP2T)
+                    lowerUrl.contains(".mp4") -> mediaItemBuilder.setMimeType(MimeTypes.VIDEO_MP4)
+                    else -> { /* let DefaultMediaSourceFactory auto-detect */ }
+                }
+            }
         }
 
         // DRM configuration
