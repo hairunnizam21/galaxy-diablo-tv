@@ -5,6 +5,21 @@ modern AndroidX Media3 (ExoPlayer) backend and a neon-blue glassmorphism UI.
 
 > Universe of Live TV — © Suzuneiayano
 
+---
+
+## ⬇️ Download (latest v1.2)
+
+| | Fail | Saiz | Link |
+|---|---|---|---|
+| 📱 | **APK siap install** | ~12 MB | **[Download APK](releases/galaxy-diablo-v1.2-debug.apk)** |
+| 📦 | **Source code zip** (untuk recompile) | ~150 KB | **[Download ZIP](releases/galaxy-diablo-source-v1.2.zip)** |
+
+> **Cara install APK:** Buka link di telefon Android → benarkan "Install dari sumber tidak dikenali" → tap fail yang dimuat turun → Install.
+
+Lihat folder [`releases/`](releases/) untuk semua versi.
+
+---
+
 ## Features
 
 - **AndroidX Media3 ExoPlayer 1.4.1** — same engine family as the source app.
