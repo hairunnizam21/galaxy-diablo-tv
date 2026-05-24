@@ -14,6 +14,7 @@ import com.galaxy.diablo.R
 import com.galaxy.diablo.data.PlaylistCache
 import com.galaxy.diablo.data.PlaylistRepository
 import com.galaxy.diablo.data.PrefsManager
+import com.galaxy.diablo.ui.enterImmersiveMode
 import com.galaxy.diablo.ui.home.HomeActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -28,11 +29,8 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
         setContentView(R.layout.activity_splash)
+        enterImmersiveMode()
 
         pb = findViewById(R.id.pb_splash)
         status = findViewById(R.id.tv_splash_status)

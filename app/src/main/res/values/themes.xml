@@ -5,12 +5,14 @@
         <item name="colorPrimaryDark">@color/galaxy_purple_dark</item>
         <item name="colorAccent">@color/diablo_red</item>
         <item name="android:windowBackground">@color/galaxy_bg</item>
-        <item name="android:statusBarColor">@color/galaxy_bg</item>
-        <item name="android:navigationBarColor">@color/galaxy_bg</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:textColorPrimary">@color/text_primary</item>
         <item name="android:textColorSecondary">@color/text_secondary</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowLayoutInDisplayCutoutMode" tools:targetApi="o_mr1">shortEdges</item>
     </style>
 
     <style name="Theme.GalaxyDiablo.Splash" parent="Theme.GalaxyDiablo">

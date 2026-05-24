@@ -6,8 +6,10 @@ Folder ini mengandungi binari prebuilt untuk install terus tanpa perlu compile.
 
 | Fail | Saiz | Penerangan |
 |---|---|---|
-| `galaxy-diablo-v1.3-debug.apk` | ~12 MB | **Latest** — APK debug v1.3 (player touch fix + UA fix). |
-| `galaxy-diablo-source-v1.3.zip` | ~280 KB | **Latest** — Source snapshot v1.3. |
+| `galaxy-diablo-v1.4-debug.apk` | ~12 MB | **Latest** — Immersive fullscreen + URL masking. |
+| `galaxy-diablo-source-v1.4.zip` | ~280 KB | **Latest** — Source snapshot v1.4. |
+| `galaxy-diablo-v1.3-debug.apk` | ~12 MB | v1.3 (player touch fix + UA fix). |
+| `galaxy-diablo-source-v1.3.zip` | ~280 KB | Source v1.3. |
 | `galaxy-diablo-v1.2-debug.apk` | ~12 MB | v1.2 (Telegram info + auto-refresh). |
 | `galaxy-diablo-source-v1.2.zip` | ~150 KB | Source v1.2. |
 
@@ -33,7 +35,12 @@ cd galaxy-diablo
 
 ## Versi
 
-**v1.3** — bug fixes (latest)
+**v1.4** — UX + privacy (latest)
+- Immersive fullscreen mode (status bar + nav bar hidden) untuk semua activity
+- URL playlist M3U dimask di Settings; tap ikon mata untuk reveal
+- Strings & About text dah dibersihkan dari reference sumber khusus
+
+**v1.3** — bug fixes
 - Fix: player control buttons tak respond (transparent overlay blocked touches)
 - Add: Chrome-like User-Agent default untuk lebih banyak CDN compatibility
 - Add: MimeType detection untuk URL tanpa file extension

@@ -25,6 +25,7 @@ import com.galaxy.diablo.data.Channel
 import com.galaxy.diablo.data.PlaylistCache
 import com.galaxy.diablo.data.PlaylistRepository
 import com.galaxy.diablo.data.PrefsManager
+import com.galaxy.diablo.ui.enterImmersiveMode
 import com.galaxy.diablo.ui.player.PlayerActivity
 import com.galaxy.diablo.ui.settings.SettingsActivity
 import kotlinx.coroutines.Dispatchers
@@ -56,6 +57,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+        enterImmersiveMode()
 
         rvCategories = findViewById(R.id.rv_categories)
         rvChannels = findViewById(R.id.rv_channels)

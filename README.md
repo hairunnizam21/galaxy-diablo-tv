@@ -7,14 +7,19 @@ modern AndroidX Media3 (ExoPlayer) backend and a neon-blue glassmorphism UI.
 
 ---
 
-## ⬇️ Download (latest v1.3)
+## ⬇️ Download (latest v1.4)
 
 | | Fail | Saiz | Link |
 |---|---|---|---|
-| 📱 | **APK siap install** | ~12 MB | **[Download APK v1.3](releases/galaxy-diablo-v1.3-debug.apk)** |
-| 📦 | **Source code zip** (untuk recompile) | ~280 KB | **[Download ZIP v1.3](releases/galaxy-diablo-source-v1.3.zip)** |
+| 📱 | **APK siap install** | ~12 MB | **[Download APK v1.4](releases/galaxy-diablo-v1.4-debug.apk)** |
+| 📦 | **Source code zip** (untuk recompile) | ~280 KB | **[Download ZIP v1.4](releases/galaxy-diablo-source-v1.4.zip)** |
 
-**Versi v1.3 (latest) — fixes:**
+**Versi v1.4 (latest) — UX + privacy:**
+- 🖥 **Immersive fullscreen** — status bar + nav bar disembunyikan (sama macam PerfectTV)
+- 🔒 **URL M3U dimask di Settings** — sumber tidak nampak by default; tap ikon mata untuk reveal
+- 📄 Strings & "Tentang" dah dibersihkan dari reference sumber khusus
+
+**Versi v1.3 — player fixes:**
 - 🛠 Player buttons sekarang boleh ditekan (transparent overlay yang menghalang touch dah dialih keluar)
 - 🌐 Chrome-like User-Agent default — lebih banyak channel CDN-protected boleh main
 - ⏱ HTTP timeout 20s (lebih sabar untuk stream slow-start)

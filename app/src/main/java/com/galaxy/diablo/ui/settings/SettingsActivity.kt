@@ -17,6 +17,7 @@ import com.galaxy.diablo.R
 import com.galaxy.diablo.data.PlaylistCache
 import com.galaxy.diablo.data.PlaylistRepository
 import com.galaxy.diablo.data.PrefsManager
+import com.galaxy.diablo.ui.enterImmersiveMode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -26,6 +27,7 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
+        enterImmersiveMode()
 
         val etUrl = findViewById<EditText>(R.id.et_playlist_url)
         val swToast = findViewById<SwitchCompat>(R.id.sw_welcome_toast)
@@ -34,8 +36,19 @@ class SettingsActivity : AppCompatActivity() {
         val btnBack = findViewById<ImageButton>(R.id.btn_back)
         val btnSave = findViewById<Button>(R.id.btn_save_url)
         val btnReset = findViewById<Button>(R.id.btn_reset_url)
+        val tvSource = findViewById<TextView>(R.id.tv_source_value)
+        val btnToggleSource = findViewById<ImageButton>(R.id.btn_toggle_source)
 
-        etUrl.setText(PrefsManager.playlistUrl)
+        // Privacy: do NOT pre-fill the input with the current URL.
+        // The current URL is only revealed when the user explicitly taps the eye icon.
+        etUrl.setText("")
+        var sourceRevealed = false
+        tvSource.text = getString(R.string.source_hidden)
+        btnToggleSource.setOnClickListener {
+            sourceRevealed = !sourceRevealed
+            tvSource.text = if (sourceRevealed) PrefsManager.playlistUrl
+                else getString(R.string.source_hidden)
+        }
         swToast.isChecked = PrefsManager.showWelcomeToast
         tvAbout.text = getString(R.string.about_body)
         tvAbout.movementMethod = LinkMovementMethod.getInstance()
@@ -56,7 +69,8 @@ class SettingsActivity : AppCompatActivity() {
         }
         btnReset.setOnClickListener {
             PrefsManager.playlistUrl = PrefsManager.defaultPlaylistUrl
-            etUrl.setText(PrefsManager.defaultPlaylistUrl)
+            etUrl.setText("")
+            if (sourceRevealed) tvSource.text = PrefsManager.playlistUrl
             reloadPlaylist()
         }
         rowClear.setOnClickListener {

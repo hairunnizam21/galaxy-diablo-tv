@@ -37,6 +37,7 @@ import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
 import com.galaxy.diablo.R
 import com.galaxy.diablo.data.Channel
+import com.galaxy.diablo.ui.enterImmersiveMode
 import org.json.JSONObject
 
 @UnstableApi
@@ -63,6 +64,7 @@ class PlayerActivity : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         window.statusBarColor = Color.BLACK
         setContentView(R.layout.activity_player)
+        enterImmersiveMode()
 
         playerView = findViewById(R.id.player_view)
         loadingOverlay = findViewById(R.id.loading_overlay)

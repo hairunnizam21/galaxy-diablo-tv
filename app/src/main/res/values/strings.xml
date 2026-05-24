@@ -43,7 +43,12 @@
     <string name="settings_show_welcome_toast">Tunjukkan toast selamat datang</string>
     <string name="settings_show_welcome_toast_desc">Mesej selamat datang setiap kali masuk menu</string>
     <string name="settings_playlist_url">URL Playlist M3U</string>
-    <string name="settings_playlist_url_desc">Masukkan link M3U dari GitHub atau mana-mana sumber yang menyediakan M3U. Sokongan format standard #EXTINF dan format custom `=== Kategori ===`.</string>
+    <string name="settings_playlist_url_desc">Masukkan link M3U dari GitHub atau mana-mana sumber yang menyediakan M3U. Sokongan format standard #EXTINF dan format custom blok kategori.</string>
+    <string name="source_label">Sumber semasa:</string>
+    <string name="source_hidden">•••••••••• (tersembunyi)</string>
+    <string name="source_toggle_visibility">Tunjuk/sembunyi sumber</string>
+    <string name="source_replace_label">Tukar sumber</string>
+    <string name="source_input_hint">Tampal URL M3U baru di sini</string>
     <string name="settings_clear_cache">Padam cache</string>
     <string name="settings_clear_cache_desc">Padam playlist yang dicache</string>
     <string name="settings_info">Info &amp; Hubungi</string>
@@ -55,7 +60,7 @@
     <string name="cannot_open_link">Tiada aplikasi untuk buka link ini</string>
 
     <string name="settings_about">Tentang Galaxy Diablo</string>
-    <string name="about_body">Galaxy Diablo • IPTV Player\n\nPlayer: AndroidX Media3 ExoPlayer\nProtokol: DASH (.mpd), HLS (.m3u8), MP4 progressive, RTMP\nDRM: Widevine, ClearKey\nHeaders: User-Agent, Referer, Origin, Authorization (#EXTVLCOPT)\nDirektif: #KODIPROP (license_type, license_key, manifest_type)\n\nPlaylist disokong:\n• Format standard M3U (#EXTM3U + #EXTINF)\n• Format custom `=== Kategori ===` (sumber animedantv)</string>
+    <string name="about_body">Galaxy Diablo • IPTV Player\n\nPlayer: AndroidX Media3 ExoPlayer\nProtokol: DASH (.mpd), HLS (.m3u8), MP4 progressive, RTMP\nDRM: Widevine, ClearKey\nHeaders: User-Agent, Referer, Origin, Authorization (#EXTVLCOPT)\nDirektif: #KODIPROP (license_type, license_key, manifest_type)\n\nPlaylist disokong:\n• Format standard M3U (#EXTM3U + #EXTINF)\n• Format custom blok kategori</string>
 
     <!-- Player -->
     <string name="player_loading">Bersedia menstream…</string>
