@@ -6,8 +6,10 @@ Folder ini mengandungi binari prebuilt untuk install terus tanpa perlu compile.
 
 | Fail | Saiz | Penerangan |
 |---|---|---|
-| `galaxy-diablo-v1.4-debug.apk` | ~12 MB | **Latest** — Immersive fullscreen + URL masking. |
-| `galaxy-diablo-source-v1.4.zip` | ~280 KB | **Latest** — Source snapshot v1.4. |
+| `galaxy-diablo-v1.5-debug.apk` | ~12 MB | **Latest** — Security: buang reveal/sembunyi sumber + Reset ke Default. |
+| `galaxy-diablo-source-v1.5.zip` | ~160 KB | **Latest** — Source snapshot v1.5. |
+| `galaxy-diablo-v1.4-debug.apk` | ~12 MB | v1.4 (immersive fullscreen + URL masking). |
+| `galaxy-diablo-source-v1.4.zip` | ~280 KB | Source snapshot v1.4. |
 | `galaxy-diablo-v1.3-debug.apk` | ~12 MB | v1.3 (player touch fix + UA fix). |
 | `galaxy-diablo-source-v1.3.zip` | ~280 KB | Source v1.3. |
 | `galaxy-diablo-v1.2-debug.apk` | ~12 MB | v1.2 (Telegram info + auto-refresh). |
@@ -35,9 +37,14 @@ cd galaxy-diablo
 
 ## Versi
 
-**v1.4** — UX + privacy (latest)
+**v1.5** — security hardening (latest)
+- Buang sepenuhnya ikon mata (reveal/sembunyi) dan baris "Sumber semasa" di Settings
+- Buang butang "Reset ke Default" — pulihkan sumber asal memerlukan clear app data dari Tetapan sistem
+- Setting page hanya kekal satu input field untuk tukar sumber
+
+**v1.4** — UX + privacy
 - Immersive fullscreen mode (status bar + nav bar hidden) untuk semua activity
-- URL playlist M3U dimask di Settings; tap ikon mata untuk reveal
+- URL playlist M3U dimask di Settings; tap ikon mata untuk reveal (digantikan sepenuhnya di v1.5)
 - Strings & About text dah dibersihkan dari reference sumber khusus
 
 **v1.3** — bug fixes

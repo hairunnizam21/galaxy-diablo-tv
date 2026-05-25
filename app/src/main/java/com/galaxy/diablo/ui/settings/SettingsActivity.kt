@@ -35,20 +35,10 @@ class SettingsActivity : AppCompatActivity() {
         val tvAbout = findViewById<TextView>(R.id.tv_about)
         val btnBack = findViewById<ImageButton>(R.id.btn_back)
         val btnSave = findViewById<Button>(R.id.btn_save_url)
-        val btnReset = findViewById<Button>(R.id.btn_reset_url)
-        val tvSource = findViewById<TextView>(R.id.tv_source_value)
-        val btnToggleSource = findViewById<ImageButton>(R.id.btn_toggle_source)
 
-        // Privacy: do NOT pre-fill the input with the current URL.
-        // The current URL is only revealed when the user explicitly taps the eye icon.
+        // Security: never display the current URL. To restore the default source,
+        // the user must clear the app's data from system settings.
         etUrl.setText("")
-        var sourceRevealed = false
-        tvSource.text = getString(R.string.source_hidden)
-        btnToggleSource.setOnClickListener {
-            sourceRevealed = !sourceRevealed
-            tvSource.text = if (sourceRevealed) PrefsManager.playlistUrl
-                else getString(R.string.source_hidden)
-        }
         swToast.isChecked = PrefsManager.showWelcomeToast
         tvAbout.text = getString(R.string.about_body)
         tvAbout.movementMethod = LinkMovementMethod.getInstance()
@@ -65,12 +55,6 @@ class SettingsActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             PrefsManager.playlistUrl = url
-            reloadPlaylist()
-        }
-        btnReset.setOnClickListener {
-            PrefsManager.playlistUrl = PrefsManager.defaultPlaylistUrl
-            etUrl.setText("")
-            if (sourceRevealed) tvSource.text = PrefsManager.playlistUrl
             reloadPlaylist()
         }
         rowClear.setOnClickListener {
