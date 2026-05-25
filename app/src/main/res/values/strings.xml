@@ -27,6 +27,7 @@
     <string name="no_channels">Tiada saluran dijumpai</string>
     <string name="search_hint">Cari saluran…</string>
     <string name="refresh_done">Berjaya muat %1$d saluran</string>
+    <string name="refresh_unchanged">Playlist masih sama (%1$d saluran)</string>
     <string name="refreshing">Memuat semula…</string>
     <string name="silent_refresh_updated">Auto-refresh: playlist dikemas kini (%1$d saluran)</string>
     <string name="silent_refresh_unchanged">Auto-refresh: playlist masih terkini</string>

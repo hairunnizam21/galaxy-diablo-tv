@@ -215,12 +215,19 @@ class HomeActivity : AppCompatActivity() {
             withContext(Dispatchers.Main) {
                 pbLoading.visibility = View.GONE
                 res.fold(
-                    onSuccess = {
-                        PlaylistCache.channels = it
-                        allChannels = it
+                    onSuccess = { fresh ->
+                        val changed = fresh.size != allChannels.size ||
+                            fresh.map { it.name to it.streamUrl }.toSet() !=
+                                allChannels.map { it.name to it.streamUrl }.toSet()
+                        PlaylistCache.channels = fresh
+                        allChannels = fresh
                         rebuildCategories()
                         showCurrentCategoryChannels()
-                        toast(getString(R.string.refresh_done, it.size))
+                        if (changed) {
+                            toast(getString(R.string.refresh_done, fresh.size))
+                        } else {
+                            toast(getString(R.string.refresh_unchanged, fresh.size))
+                        }
                     },
                     onFailure = { toast(getString(R.string.fetch_failed, it.message ?: "")) }
                 )

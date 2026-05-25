@@ -7,14 +7,19 @@ modern AndroidX Media3 (ExoPlayer) backend and a neon-blue glassmorphism UI.
 
 ---
 
-## ⬇️ Download (latest v1.6)
+## ⬇️ Download (latest v1.7)
 
 | | Fail | Saiz | Link |
 |---|---|---|---|
-| 📱 | **APK siap install** | ~12 MB | **[Download APK v1.6](releases/galaxy-diablo-v1.6-debug.apk)** |
-| 📦 | **Source code zip** (untuk recompile) | ~160 KB | **[Download ZIP v1.6](releases/galaxy-diablo-source-v1.6.zip)** |
+| 📱 | **APK siap install** | ~12 MB | **[Download APK v1.7](releases/galaxy-diablo-v1.7-debug.apk)** |
+| 📦 | **Source code zip** (untuk recompile) | ~160 KB | **[Download ZIP v1.7](releases/galaxy-diablo-source-v1.7.zip)** |
 
-**Versi v1.6 (latest) — playback fixes:**
+**Versi v1.7 (latest) — refresh CDN cache-bust:**
+- 🔄 **Refresh sekarang betul-betul ambil playlist terbaru dari GitHub.** Dulu GitHub raw URL di-cache 5 minit oleh Fastly CDN → walau tekan refresh, data lama yang turun. Sekarang setiap fetch tambah `?_ts=<epoch>` cache-buster + `Cache-Control: no-cache` header → CDN dipaksa fetch dari origin.
+- 📢 **Toast lebih informatif** — kalau playlist tak berubah, tunjuk "Playlist masih sama (N saluran)" instead of "Berjaya muat".
+- 🧹 OkHttp internal cache dimatikan secara eksplisit.
+
+**Versi v1.6 — playback fixes:**
 - 🔓 **ClearKey inline kid:key sekarang berfungsi** — guna `LocalMediaDrmCallback`, bypass HTTP factory yang tolak skema `data:`
 - 🎯 **DRM auto-detection diperbaiki** — proxy URL macam `cumbudrm.php` / `semar.my.id` di-label ClearKey (bukan Widevine)
 - 🚫 **Skip DRM untuk HLS + kid:key** — kombinasi tu memang tak compatible; channel tetap cuba main tanpa DRM
