@@ -26,8 +26,14 @@ import androidx.media3.common.TrackSelectionOverride
 import androidx.media3.common.Tracks
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultHttpDataSource
+import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.drm.DefaultDrmSessionManager
 import androidx.media3.exoplayer.drm.DefaultDrmSessionManagerProvider
+import androidx.media3.exoplayer.drm.DrmSessionManager
+import androidx.media3.exoplayer.drm.DrmSessionManagerProvider
+import androidx.media3.exoplayer.drm.FrameworkMediaDrm
+import androidx.media3.exoplayer.drm.LocalMediaDrmCallback
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.media3.exoplayer.source.MediaSource
 import androidx.media3.exoplayer.dash.DashMediaSource
@@ -58,6 +64,10 @@ class PlayerActivity : AppCompatActivity() {
         AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT to "FIXED H"
     )
     private var ratioIndex = 0
+
+    /** How many transient retries we've already issued for the current channel. */
+    private var retryCount: Int = 0
+    private val maxRetries: Int = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,7 +109,21 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun initPlayer() {
+        // Tuned for live IPTV: small startup buffer (fast tune-in), modest max buffer
+        // (cope with jitter), prioritise time over byte limits.
+        val loadControl = DefaultLoadControl.Builder()
+            .setBufferDurationsMs(
+                /* minBufferMs = */ 2_000,
+                /* maxBufferMs = */ 15_000,
+                /* bufferForPlaybackMs = */ 1_000,
+                /* bufferForPlaybackAfterRebufferMs = */ 2_000
+            )
+            .setTargetBufferBytes(C.LENGTH_UNSET)
+            .setPrioritizeTimeOverSizeThresholds(true)
+            .build()
+
         val p = ExoPlayer.Builder(this)
+            .setLoadControl(loadControl)
             .setAudioAttributes(AudioAttributes.DEFAULT, true)
             .setHandleAudioBecomingNoisy(true)
             .build()
@@ -110,11 +134,19 @@ class PlayerActivity : AppCompatActivity() {
             }
 
             override fun onIsPlayingChanged(isPlaying: Boolean) {
-                if (isPlaying) loadingOverlay.visibility = View.GONE
+                if (isPlaying) {
+                    loadingOverlay.visibility = View.GONE
+                    retryCount = 0
+                }
             }
 
             override fun onPlayerError(error: PlaybackException) {
                 loadingOverlay.visibility = View.GONE
+                if (retryCount < maxRetries && isTransient(error)) {
+                    retryCount++
+                    playerView.postDelayed({ playCurrent() }, 1_500)
+                    return
+                }
                 val ch = channels.getOrNull(currentIndex)
                 val msg = buildString {
                     append(ch?.name ?: "Channel")
@@ -129,6 +161,19 @@ class PlayerActivity : AppCompatActivity() {
         player = p
     }
 
+    private fun isTransient(error: PlaybackException): Boolean {
+        return when (error.errorCode) {
+            PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_FAILED,
+            PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_TIMEOUT,
+            PlaybackException.ERROR_CODE_IO_INVALID_HTTP_CONTENT_TYPE,
+            PlaybackException.ERROR_CODE_IO_READ_POSITION_OUT_OF_RANGE,
+            PlaybackException.ERROR_CODE_BEHIND_LIVE_WINDOW,
+            PlaybackException.ERROR_CODE_PARSING_CONTAINER_MALFORMED,
+            PlaybackException.ERROR_CODE_PARSING_MANIFEST_MALFORMED -> true
+            else -> false
+        }
+    }
+
     private fun playCurrent() {
         val ch = channels.getOrNull(currentIndex) ?: return
         val titleView = playerView.findViewById<TextView>(R.id.tv_title)
@@ -141,8 +186,8 @@ class PlayerActivity : AppCompatActivity() {
         val httpFactory = DefaultHttpDataSource.Factory()
             .setUserAgent(ch.userAgent ?: defaultUa)
             .setAllowCrossProtocolRedirects(true)
-            .setConnectTimeoutMs(20_000)
-            .setReadTimeoutMs(20_000)
+            .setConnectTimeoutMs(30_000)
+            .setReadTimeoutMs(30_000)
             .apply {
                 val headers = mutableMapOf<String, String>()
                 ch.referer?.let { headers["Referer"] = it }
@@ -174,35 +219,33 @@ class PlayerActivity : AppCompatActivity() {
             }
         }
 
-        // DRM configuration
-        if (ch.hasDrm) {
+        // Inline ClearKey (a raw `kid:key` pair) must be delivered via
+        // LocalMediaDrmCallback — the previous `data:application/json;base64,…`
+        // approach is rejected by DefaultHttpDataSource (only http/https URIs).
+        var inlineClearKeyProvider: DrmSessionManagerProvider? = null
+        val inlineClearKey: String? = when {
+            ch.drmScheme.equals("clearkey", true) -> {
+                val candidate = ch.drmKey ?: ch.licenseUrl
+                candidate?.takeIf { it.isNotBlank() && !it.startsWith("http", true) }
+            }
+            else -> null
+        }
+        if (inlineClearKey != null) {
+            val jwksBytes = clearKeyToJwks(inlineClearKey).toByteArray()
+            val callback = LocalMediaDrmCallback(jwksBytes)
+            val manager: DrmSessionManager = DefaultDrmSessionManager.Builder()
+                .setUuidAndExoMediaDrmProvider(C.CLEARKEY_UUID, FrameworkMediaDrm.DEFAULT_PROVIDER)
+                .setMultiSession(false)
+                .build(callback)
+            inlineClearKeyProvider = DrmSessionManagerProvider { manager }
+        } else if (ch.hasDrm) {
             val drmScheme = when (ch.drmScheme?.lowercase()) {
                 "clearkey" -> C.CLEARKEY_UUID
                 else -> C.WIDEVINE_UUID
             }
             val drmConfigBuilder = MediaItem.DrmConfiguration.Builder(drmScheme)
-            when {
-                // ClearKey can be either a license server URL or a key map (kid:key or jwks)
-                ch.drmScheme.equals("clearkey", true) -> {
-                    val key = ch.drmKey ?: ch.licenseUrl
-                    if (!key.isNullOrBlank() && !key.startsWith("http")) {
-                        val jwks = clearKeyToJwks(key)
-                        drmConfigBuilder.setKeySetId(null)
-                        // Use license URL with data: scheme is not supported; we use license response override via license URI of "data:"-style is not supported.
-                        // Workaround: set keySetId is for persistence; we instead provide via license URI hack:
-                        // The recommended way is to set licenseUri = "data:application/json;base64,<base64 jwks>"
-                        val b64 = android.util.Base64.encodeToString(
-                            jwks.toByteArray(),
-                            android.util.Base64.NO_WRAP or android.util.Base64.URL_SAFE
-                        )
-                        drmConfigBuilder.setLicenseUri("data:application/json;base64,$b64")
-                    } else if (!ch.licenseUrl.isNullOrBlank()) {
-                        drmConfigBuilder.setLicenseUri(ch.licenseUrl)
-                    }
-                }
-                else -> {
-                    if (!ch.licenseUrl.isNullOrBlank()) drmConfigBuilder.setLicenseUri(ch.licenseUrl)
-                }
+            ch.licenseUrl?.takeIf { it.isNotBlank() && it.startsWith("http", true) }?.let {
+                drmConfigBuilder.setLicenseUri(it)
             }
             mediaItemBuilder.setDrmConfiguration(drmConfigBuilder.build())
         }
@@ -212,12 +255,15 @@ class PlayerActivity : AppCompatActivity() {
             com.galaxy.diablo.data.StreamType.HLS -> HlsMediaSource.Factory(httpFactory)
             else -> DefaultMediaSourceFactory(this).setDataSourceFactory(httpFactory)
         }
-        val drmProvider = DefaultDrmSessionManagerProvider().apply {
-            setDrmHttpDataSourceFactory(httpFactory)
+        val drmProvider: DrmSessionManagerProvider = inlineClearKeyProvider
+            ?: DefaultDrmSessionManagerProvider().apply {
+                setDrmHttpDataSourceFactory(httpFactory)
+            }
+        when (sourceFactory) {
+            is DashMediaSource.Factory -> sourceFactory.setDrmSessionManagerProvider(drmProvider)
+            is HlsMediaSource.Factory -> sourceFactory.setDrmSessionManagerProvider(drmProvider)
+            is DefaultMediaSourceFactory -> sourceFactory.setDrmSessionManagerProvider(drmProvider)
         }
-        if (sourceFactory is DashMediaSource.Factory) sourceFactory.setDrmSessionManagerProvider(drmProvider)
-        if (sourceFactory is HlsMediaSource.Factory) sourceFactory.setDrmSessionManagerProvider(drmProvider)
-        if (sourceFactory is DefaultMediaSourceFactory) sourceFactory.setDrmSessionManagerProvider(drmProvider)
 
         val mediaItem = mediaItemBuilder.build()
         val source = sourceFactory.createMediaSource(mediaItem)
@@ -272,12 +318,14 @@ class PlayerActivity : AppCompatActivity() {
     private fun previous() {
         if (channels.isEmpty()) return
         currentIndex = (currentIndex - 1 + channels.size) % channels.size
+        retryCount = 0
         playCurrent()
     }
 
     private fun next() {
         if (channels.isEmpty()) return
         currentIndex = (currentIndex + 1) % channels.size
+        retryCount = 0
         playCurrent()
     }
 

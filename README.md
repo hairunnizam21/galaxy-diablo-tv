@@ -7,16 +7,24 @@ modern AndroidX Media3 (ExoPlayer) backend and a neon-blue glassmorphism UI.
 
 ---
 
-## ⬇️ Download (latest v1.5)
+## ⬇️ Download (latest v1.6)
 
 | | Fail | Saiz | Link |
 |---|---|---|---|
-| 📱 | **APK siap install** | ~12 MB | **[Download APK v1.5](releases/galaxy-diablo-v1.5-debug.apk)** |
-| 📦 | **Source code zip** (untuk recompile) | ~160 KB | **[Download ZIP v1.5](releases/galaxy-diablo-source-v1.5.zip)** |
+| 📱 | **APK siap install** | ~12 MB | **[Download APK v1.6](releases/galaxy-diablo-v1.6-debug.apk)** |
+| 📦 | **Source code zip** (untuk recompile) | ~160 KB | **[Download ZIP v1.6](releases/galaxy-diablo-source-v1.6.zip)** |
 
-**Versi v1.5 (latest) — security hardening:**
-- 🔒 **URL M3U tidak boleh dilihat semula** — ikon mata (reveal/sembunyi) dan baris "Sumber semasa" dibuang sepenuhnya
-- 🚫 **Butang "Reset ke Default" dibuang** — untuk pulihkan sumber asal, pengguna mesti padam data aplikasi melalui Tetapan sistem
+**Versi v1.6 (latest) — playback fixes:**
+- 🔓 **ClearKey inline kid:key sekarang berfungsi** — guna `LocalMediaDrmCallback`, bypass HTTP factory yang tolak skema `data:`
+- 🎯 **DRM auto-detection diperbaiki** — proxy URL macam `cumbudrm.php` / `semar.my.id` di-label ClearKey (bukan Widevine)
+- 🚫 **Skip DRM untuk HLS + kid:key** — kombinasi tu memang tak compatible; channel tetap cuba main tanpa DRM
+- ⚡ **Buffer live tuning** — startup buffer 2s (cepat tune-in), max buffer 15s; `LoadControl` di-optimize untuk live
+- 🔁 **Auto-retry sekali** untuk error transient (network, timeout, behind live window, manifest malformed)
+- ⏱ HTTP timeout dinaikkan 20s → 30s
+
+**Versi v1.5 — security hardening:**
+- 🔒 URL M3U tidak boleh dilihat semula — ikon mata dan baris "Sumber semasa" dibuang sepenuhnya
+- 🚫 Butang "Reset ke Default" dibuang — untuk pulihkan sumber asal, padam data aplikasi melalui Tetapan sistem
 - 📝 Settings hanya kekal satu input field untuk tukar sumber M3U
 
 **Versi v1.4 — UX + privacy:**
