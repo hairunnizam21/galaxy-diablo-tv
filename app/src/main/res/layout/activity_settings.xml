@@ -67,50 +67,6 @@
                 style="@style/SettingSectionDescription"
                 android:text="@string/settings_playlist_url_desc" />
 
-            <!-- Current source status (URL is hidden by default for privacy) -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/bg_input_field"
-                android:gravity="center_vertical"
-                android:minHeight="48dp"
-                android:orientation="horizontal"
-                android:paddingStart="14dp"
-                android:paddingEnd="6dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="@string/source_label"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/tv_source_value"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:ellipsize="end"
-                    android:fontFamily="monospace"
-                    android:maxLines="1"
-                    android:text="@string/source_hidden"
-                    android:textColor="@color/neon_cyan"
-                    android:textSize="12sp" />
-
-                <ImageButton
-                    android:id="@+id/btn_toggle_source"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/source_toggle_visibility"
-                    android:padding="8dp"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_eye" />
-            </LinearLayout>
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -141,39 +97,18 @@
                 android:textColorHint="@color/text_hint"
                 android:textSize="13sp" />
 
-            <LinearLayout
+            <Button
+                android:id="@+id/btn_save_url"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="44dp"
                 android:layout_marginTop="12dp"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/btn_save_url"
-                    android:layout_width="0dp"
-                    android:layout_height="44dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_button_primary"
-                    android:focusable="true"
-                    android:fontFamily="sans-serif-medium"
-                    android:letterSpacing="0.04"
-                    android:text="Simpan &amp; Muat Semula"
-                    android:textColor="@color/white"
-                    android:textSize="13sp" />
-
-                <Button
-                    android:id="@+id/btn_reset_url"
-                    android:layout_width="0dp"
-                    android:layout_height="44dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_button_secondary"
-                    android:focusable="true"
-                    android:fontFamily="sans-serif-medium"
-                    android:letterSpacing="0.04"
-                    android:text="Reset ke Default"
-                    android:textColor="@color/neon_cyan"
-                    android:textSize="13sp" />
-            </LinearLayout>
+                android:background="@drawable/bg_button_primary"
+                android:focusable="true"
+                android:fontFamily="sans-serif-medium"
+                android:letterSpacing="0.04"
+                android:text="Simpan &amp; Muat Semula"
+                android:textColor="@color/white"
+                android:textSize="13sp" />
 
             <View
                 style="@style/SettingDivider"

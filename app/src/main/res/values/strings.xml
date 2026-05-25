@@ -43,10 +43,7 @@
     <string name="settings_show_welcome_toast">Tunjukkan toast selamat datang</string>
     <string name="settings_show_welcome_toast_desc">Mesej selamat datang setiap kali masuk menu</string>
     <string name="settings_playlist_url">URL Playlist M3U</string>
-    <string name="settings_playlist_url_desc">Masukkan link M3U dari GitHub atau mana-mana sumber yang menyediakan M3U. Sokongan format standard #EXTINF dan format custom blok kategori.</string>
-    <string name="source_label">Sumber semasa:</string>
-    <string name="source_hidden">•••••••••• (tersembunyi)</string>
-    <string name="source_toggle_visibility">Tunjuk/sembunyi sumber</string>
+    <string name="settings_playlist_url_desc">Masukkan link M3U dari GitHub atau mana-mana sumber yang menyediakan M3U. Sokongan format standard #EXTINF dan format custom blok kategori. Untuk pulihkan sumber asal, padam data aplikasi melalui Tetapan sistem.</string>
     <string name="source_replace_label">Tukar sumber</string>
     <string name="source_input_hint">Tampal URL M3U baru di sini</string>
     <string name="settings_clear_cache">Padam cache</string>

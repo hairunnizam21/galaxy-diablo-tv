@@ -7,16 +7,21 @@ modern AndroidX Media3 (ExoPlayer) backend and a neon-blue glassmorphism UI.
 
 ---
 
-## ⬇️ Download (latest v1.4)
+## ⬇️ Download (latest v1.5)
 
 | | Fail | Saiz | Link |
 |---|---|---|---|
-| 📱 | **APK siap install** | ~12 MB | **[Download APK v1.4](releases/galaxy-diablo-v1.4-debug.apk)** |
-| 📦 | **Source code zip** (untuk recompile) | ~280 KB | **[Download ZIP v1.4](releases/galaxy-diablo-source-v1.4.zip)** |
+| 📱 | **APK siap install** | ~12 MB | **[Download APK v1.5](releases/galaxy-diablo-v1.5-debug.apk)** |
+| 📦 | **Source code zip** (untuk recompile) | ~160 KB | **[Download ZIP v1.5](releases/galaxy-diablo-source-v1.5.zip)** |
 
-**Versi v1.4 (latest) — UX + privacy:**
-- 🖥 **Immersive fullscreen** — status bar + nav bar disembunyikan (sama macam PerfectTV)
-- 🔒 **URL M3U dimask di Settings** — sumber tidak nampak by default; tap ikon mata untuk reveal
+**Versi v1.5 (latest) — security hardening:**
+- 🔒 **URL M3U tidak boleh dilihat semula** — ikon mata (reveal/sembunyi) dan baris "Sumber semasa" dibuang sepenuhnya
+- 🚫 **Butang "Reset ke Default" dibuang** — untuk pulihkan sumber asal, pengguna mesti padam data aplikasi melalui Tetapan sistem
+- 📝 Settings hanya kekal satu input field untuk tukar sumber M3U
+
+**Versi v1.4 — UX + privacy:**
+- 🖥 Immersive fullscreen — status bar + nav bar disembunyikan
+- 🔒 URL M3U dimask di Settings dengan toggle reveal (digantikan sepenuhnya di v1.5)
 - 📄 Strings & "Tentang" dah dibersihkan dari reference sumber khusus
 
 **Versi v1.3 — player fixes:**
