@@ -3,6 +3,7 @@ package com.galaxy.diablo.data
 import android.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.CacheControl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.File
@@ -18,6 +19,28 @@ class PlaylistRepository(private val context: Context) {
     private val client = OkHttpClient.Builder()
         .connectTimeout(20, TimeUnit.SECONDS)
         .readTimeout(30, TimeUnit.SECONDS)
+        // No OkHttp cache; we manage our own on-disk cache and want every
+        // network call to actually hit the network.
+        .cache(null)
+        .build()
+
+    /**
+     * Appends a `_ts` cache-buster query parameter to defeat any intermediate
+     * CDN (e.g. Fastly in front of raw.githubusercontent.com, which honours
+     * `cache-control: max-age=300` and would otherwise serve a stale copy for
+     * up to 5 minutes after a GitHub push).
+     */
+    private fun bustCdnCache(url: String): String {
+        val separator = if (url.contains("?")) "&" else "?"
+        return "$url${separator}_ts=${System.currentTimeMillis()}"
+    }
+
+    private fun buildRequest(url: String): Request = Request.Builder()
+        .url(bustCdnCache(url))
+        .header("User-Agent", "GalaxyDiablo/1.0 (Android)")
+        .header("Cache-Control", "no-cache, no-store, max-age=0")
+        .header("Pragma", "no-cache")
+        .cacheControl(CacheControl.FORCE_NETWORK)
         .build()
 
     suspend fun load(
@@ -57,11 +80,7 @@ class PlaylistRepository(private val context: Context) {
 
     private fun fetchAndCache(url: String, onProgress: (String, Int) -> Unit): String {
         onProgress("Mengambil playlist dari sumber…", 10)
-        val request = Request.Builder()
-            .url(url)
-            .header("User-Agent", "GalaxyDiablo/1.0 (Android)")
-            .build()
-        client.newCall(request).execute().use { response ->
+        client.newCall(buildRequest(url)).execute().use { response ->
             if (!response.isSuccessful) {
                 throw RuntimeException("HTTP ${response.code} dari $url")
             }
@@ -82,11 +101,7 @@ class PlaylistRepository(private val context: Context) {
      */
     suspend fun fetchFreshSilently(url: String): Result<List<Channel>> = withContext(Dispatchers.IO) {
         try {
-            val request = Request.Builder()
-                .url(url)
-                .header("User-Agent", "GalaxyDiablo/1.0 (Android)")
-                .build()
-            client.newCall(request).execute().use { response ->
+            client.newCall(buildRequest(url)).execute().use { response ->
                 if (!response.isSuccessful) {
                     return@withContext Result.failure<List<Channel>>(RuntimeException("HTTP ${response.code}"))
                 }

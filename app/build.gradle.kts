@@ -12,8 +12,8 @@ android {
         applicationId = "com.galaxy.diablo"
         minSdk = 21
         targetSdk = 34
-        versionCode = 6
-        versionName = "1.6"
+        versionCode = 7
+        versionName = "1.7"
 
         buildConfigField("String", "PLAYLIST_URL", "\"https://raw.githubusercontent.com/hairunnizam21/myiptv-playlist/refs/heads/main/animedantv.m3u\"")
         buildConfigField("String", "COPYRIGHT", "\"\u00a9 Suzuneiayano\"")

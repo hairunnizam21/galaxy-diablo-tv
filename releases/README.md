@@ -6,8 +6,10 @@ Folder ini mengandungi binari prebuilt untuk install terus tanpa perlu compile.
 
 | Fail | Saiz | Penerangan |
 |---|---|---|
-| `galaxy-diablo-v1.6-debug.apk` | ~12 MB | **Latest** — Playback: ClearKey inline + DRM detection + live buffer tuning + auto-retry. |
-| `galaxy-diablo-source-v1.6.zip` | ~160 KB | **Latest** — Source snapshot v1.6. |
+| `galaxy-diablo-v1.7-debug.apk` | ~12 MB | **Latest** — Refresh sekarang bypass GitHub CDN cache (5-min Fastly TTL); toast lebih informatif. |
+| `galaxy-diablo-source-v1.7.zip` | ~160 KB | **Latest** — Source snapshot v1.7. |
+| `galaxy-diablo-v1.6-debug.apk` | ~12 MB | v1.6 — Playback: ClearKey inline + DRM detection + live buffer tuning + auto-retry. |
+| `galaxy-diablo-source-v1.6.zip` | ~160 KB | Source snapshot v1.6. |
 | `galaxy-diablo-v1.5-debug.apk` | ~12 MB | v1.5 (security: buang reveal/sembunyi + Reset to Default). |
 | `galaxy-diablo-source-v1.5.zip` | ~160 KB | Source snapshot v1.5. |
 | `galaxy-diablo-v1.4-debug.apk` | ~12 MB | v1.4 (immersive fullscreen + URL masking). |
@@ -39,7 +41,14 @@ cd galaxy-diablo
 
 ## Versi
 
-**v1.6** — playback fixes (latest)
+**v1.7** — refresh CDN cache-bust (latest)
+- Refresh button (top-bar + swipe + settings) sekarang betul-betul ambil playlist terbaru dari GitHub. Sebelum ini Fastly CDN (yang depan `raw.githubusercontent.com`) cache content selama 5 minit (`max-age=300`), so refresh dapat data lama.
+- Setiap fetch sekarang tambah `?_ts=<epoch>` query parameter → force CDN refresh.
+- Header request: `Cache-Control: no-cache, no-store, max-age=0` + `Pragma: no-cache` + OkHttp `CacheControl.FORCE_NETWORK`.
+- OkHttp internal cache disabled secara eksplisit.
+- Toast "Playlist masih sama (N saluran)" bila content tak berubah selepas refresh.
+
+**v1.6** — playback fixes
 - ClearKey inline `kid:key` sekarang berfungsi (LocalMediaDrmCallback gantikan `data:` URI yang tertolak)
 - DRM auto-detection: proxy ClearKey URL (cumbudrm.php, semar.my.id) di-label betul sebagai ClearKey
 - Skip DRM untuk HLS + kid:key (kombinasi yang tak compatible)
