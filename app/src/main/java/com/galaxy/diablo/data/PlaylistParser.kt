@@ -105,17 +105,36 @@ object PlaylistParser {
             lower.contains(".ico")
     }
 
-    /** Heuristic DRM detection. */
+    /**
+     * Heuristic DRM detection.
+     *
+     * Returns the DRM scheme name, or null when the stream has no DRM or when the
+     * supplied license cannot be applied to the stream (e.g. an inline `kid:key`
+     * supplied alongside an HLS stream — ExoPlayer does not support inline CENC
+     * ClearKey for HLS, so we drop the DRM rather than fail the playback init).
+     */
     private fun detectDrm(stream: String, license: String?): String? {
         if (license.isNullOrBlank()) return null
         val s = stream.lowercase()
         val l = license.lowercase()
+        val isHls = s.contains(".m3u8")
+        val isDash = s.contains(".mpd")
+        val isInlineKeyPair = !l.startsWith("http") && l.contains(":") && l.length < 200
+        val isClearKeyProxyUrl = l.startsWith("http") && (
+            l.contains("clearkey") || l.contains("cumbudrm") || l.contains("semar.my.id") ||
+                l.contains("cumbu") || l.contains("getkey") || l.contains("drm.php") ||
+                l.contains("mod_chk") || l.contains("type=clearkey")
+        )
+        val isExplicitWidevine = l.contains("widevine") || l.contains("type=widevine")
+
         return when {
-            l.contains("widevine") || s.contains(".mpd") && l.startsWith("http") &&
-                !l.contains("clearkey") && !l.contains("type=clearkey") -> "widevine"
-            l.contains("clearkey") || l.contains("kty") || l.contains(":") &&
-                l.length < 100 && !l.startsWith("http") -> "clearkey"
-            else -> "widevine" // default for .mpd with separate license URL
+            // Inline `kid:key` next to an HLS stream cannot be applied — skip DRM.
+            isInlineKeyPair && isHls -> null
+            isInlineKeyPair -> "clearkey"
+            isExplicitWidevine -> "widevine"
+            isClearKeyProxyUrl -> "clearkey"
+            isDash && l.startsWith("http") -> "widevine"
+            else -> null
         }
     }
 

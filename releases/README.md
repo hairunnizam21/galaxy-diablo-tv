@@ -6,8 +6,10 @@ Folder ini mengandungi binari prebuilt untuk install terus tanpa perlu compile.
 
 | Fail | Saiz | Penerangan |
 |---|---|---|
-| `galaxy-diablo-v1.5-debug.apk` | ~12 MB | **Latest** — Security: buang reveal/sembunyi sumber + Reset ke Default. |
-| `galaxy-diablo-source-v1.5.zip` | ~160 KB | **Latest** — Source snapshot v1.5. |
+| `galaxy-diablo-v1.6-debug.apk` | ~12 MB | **Latest** — Playback: ClearKey inline + DRM detection + live buffer tuning + auto-retry. |
+| `galaxy-diablo-source-v1.6.zip` | ~160 KB | **Latest** — Source snapshot v1.6. |
+| `galaxy-diablo-v1.5-debug.apk` | ~12 MB | v1.5 (security: buang reveal/sembunyi + Reset to Default). |
+| `galaxy-diablo-source-v1.5.zip` | ~160 KB | Source snapshot v1.5. |
 | `galaxy-diablo-v1.4-debug.apk` | ~12 MB | v1.4 (immersive fullscreen + URL masking). |
 | `galaxy-diablo-source-v1.4.zip` | ~280 KB | Source snapshot v1.4. |
 | `galaxy-diablo-v1.3-debug.apk` | ~12 MB | v1.3 (player touch fix + UA fix). |
@@ -37,7 +39,15 @@ cd galaxy-diablo
 
 ## Versi
 
-**v1.5** — security hardening (latest)
+**v1.6** — playback fixes (latest)
+- ClearKey inline `kid:key` sekarang berfungsi (LocalMediaDrmCallback gantikan `data:` URI yang tertolak)
+- DRM auto-detection: proxy ClearKey URL (cumbudrm.php, semar.my.id) di-label betul sebagai ClearKey
+- Skip DRM untuk HLS + kid:key (kombinasi yang tak compatible)
+- `LoadControl` di-tune untuk live IPTV: minBuffer 2s, maxBuffer 15s, fast tune-in
+- Auto-retry sekali pada transient error (network/timeout/manifest)
+- HTTP connect & read timeout 20s → 30s
+
+**v1.5** — security hardening
 - Buang sepenuhnya ikon mata (reveal/sembunyi) dan baris "Sumber semasa" di Settings
 - Buang butang "Reset ke Default" — pulihkan sumber asal memerlukan clear app data dari Tetapan sistem
 - Setting page hanya kekal satu input field untuk tukar sumber
